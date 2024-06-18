@@ -2,6 +2,7 @@
     import axios from 'axios';
     import { reactive, onMounted } from 'vue'
     import { useTask } from 'vue-concurrency';
+    import Mapbox from './Map.vue';
 
     const state = reactive({
         states: [],
@@ -83,4 +84,15 @@
             <label for="species-multiselect">Species</label>
         </FloatLabel>
     </div>
+    <div id="layout">
+        <Mapbox />
+    </div>
 </template>
+
+<style>
+    #layout {
+        flex: 1;
+        display: flex;
+        position: relative;
+    }
+</style>
