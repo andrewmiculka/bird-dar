@@ -1,5 +1,5 @@
 bdr-www/__pycache__/app.cpython-312.pyc
-bdr-www/.env
+*.env
 
 # Logs
 logs
