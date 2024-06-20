@@ -9,6 +9,7 @@
         selectedState: null,
         speciesOptions: [],
         selectedSpecies: null,
+        observations: [],
     });
 
     const getStatesTask = useTask(function*() {
@@ -32,8 +33,8 @@
     const getSpeciesObservationsInRegion = useTask(function*(_, species, region) {
         try {
             const response = yield axios.get(`http://localhost:5000/species/${species}/region/${region}`);
-            const observations = response.data;
-            console.log(observations);
+            state.observations = response.data;
+            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -46,7 +47,7 @@
 
     function handleSpeciesSelect(value) {
         state.selectedSpecies = value;
-        getSpeciesObservationsInRegion.perform(state.selectedSpecies.speciesCode, state.selectedState.code);
+        getSpeciesObservationsInRegion.perform(state.selectedSpecies[0].speciesCode, state.selectedState.code);
     }
 
     onMounted(() => {
@@ -85,7 +86,7 @@
         </FloatLabel>
     </div>
     <div id="layout">
-        <Mapbox />
+        <Mapbox :observations="state.observations" />
     </div>
 </template>
 

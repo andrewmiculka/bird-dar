@@ -22,6 +22,8 @@ def getObservations(region=TEXAS_REGION_CODE):
 
 @app.get('/species/<species>/region/<region>')
 def getSpeciesInRegion(species, region):
+    print('inside!')
+    print('species = ', species, ' || region = ', region)
     records = ebird_api.get_species_observations(EBIRD_API_KEY, species, region, 30)
     return records
 
