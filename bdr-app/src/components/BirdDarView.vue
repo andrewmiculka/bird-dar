@@ -24,7 +24,7 @@
     const getRecentObservationsFromRegionTask = useTask(function*(_, region) {
         try {
             const response = yield axios.get(`http://localhost:5000/observations/${region}`);
-            state.speciesOptions = response.data;
+            state.speciesOptions = response.data.sort((a, b) => a.comName.localeCompare(b.comName));
         } catch (error) {
             console.log(error);
         }
@@ -34,7 +34,6 @@
         try {
             const response = yield axios.get(`http://localhost:5000/species/${species}/region/${region}`);
             state.observations = response.data;
-            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -47,7 +46,8 @@
 
     function handleSpeciesSelect(value) {
         state.selectedSpecies = value;
-        getSpeciesObservationsInRegion.perform(state.selectedSpecies[0].speciesCode, state.selectedState.code);
+        state.observations = [];
+        getSpeciesObservationsInRegion.perform(state.selectedSpecies.speciesCode, state.selectedState.code);
     }
 
     onMounted(() => {
@@ -56,43 +56,61 @@
 </script>
 
 <template>
-    <div>
-        <FloatLabel>
-            <Dropdown
-                inputId="region-dropdown"
-                v-bind:model-value="state.selectedState"
-                @update:modelValue="handleStateSelect($event)"
-                :options="state.states"
-                optionLabel="name"
-                class="w-full"
-            />
-            <label for="region-dropdown">Region</label>
-        </FloatLabel>
+    <section class="BDR-main">
+        <div id="layout">
+            <Mapbox :observations="state.observations" />
+        </div>
+        <div class="BDR-main__options">
+            <FloatLabel>
+                <Dropdown
+                    inputId="region-dropdown"
+                    class="w-full"
+                    optionLabel="name"
+                    filter
+                    v-bind:model-value="state.selectedState"
+                    @update:modelValue="handleStateSelect($event)"
+                    :options="state.states"
+                />
+                <label for="region-dropdown">Region</label>
+            </FloatLabel>
 
-        <FloatLabel>
-            <MultiSelect
-                id="species-multiselect"
-                class="w-full"
-                display="chip"
-                filter
-                :loading="getRecentObservationsFromRegionTask.isRunning"
-                :maxSelectedLabels="3"
-                v-bind:model-value="state.selectedSpecies"
-                @update:modelValue="handleSpeciesSelect($event)"
-                :options="state.speciesOptions"
-                optionLabel="comName"
-            />
-            <label for="species-multiselect">Species</label>
-        </FloatLabel>
-    </div>
-    <div id="layout">
-        <Mapbox :observations="state.observations" />
-    </div>
+            <FloatLabel>
+                <Dropdown
+                    id="species-select"
+                    class="w-full"
+                    display="chip"
+                    filter
+                    :loading="getRecentObservationsFromRegionTask.isRunning"
+                    :maxSelectedLabels="3"
+                    v-bind:model-value="state.selectedSpecies"
+                    @update:modelValue="handleSpeciesSelect($event)"
+                    :options="state.speciesOptions"
+                    optionLabel="comName"
+                />
+                <label for="species-select">Species</label>
+            </FloatLabel>
+        </div>
+    </section>
 </template>
 
 <style>
-    #layout {
+    .BDR-main {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        column-gap: 32px;
         flex: 1;
+        max-width: 1400px;
+        margin: 32px auto;
+    }
+
+    .BDR-main__options {
+        display: flex;
+        flex-direction: column;
+        padding-top: 24px;
+        row-gap: 24px;
+    }
+
+    #layout {
         display: flex;
         position: relative;
     }
