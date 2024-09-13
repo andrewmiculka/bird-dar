@@ -13,7 +13,7 @@
     "axios": "^1.7.2",
     "d3": "^7.9.0",
     "mapbox-gl": "^3.4.0",
-    "plotly.js-dist-min": "^2.33.0",
+    "plotly.js-dist-min": "^2.35.0",
     "primevue": "^3.52.0",
     "vue": "^3.4.21",
     "vue-concurrency": "^5.0.1",
