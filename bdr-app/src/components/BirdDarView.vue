@@ -4,6 +4,8 @@
     import { useTask } from 'vue-concurrency';
     import Mapbox from './Map.vue';
 
+    const US_REGION_CODE = 'US';
+
     const state = reactive({
         states: [],
         selectedState: null,
@@ -12,6 +14,7 @@
         observations: [],
     });
 
+/*
     const getStatesTask = useTask(function*() {
         try {
             const response = yield axios.get('http://localhost:5000/states');
@@ -20,8 +23,9 @@
             console.log(error);
         }
     });
+*/
 
-    const getRecentObservationsFromRegionTask = useTask(function*(_, region) {
+    const getRecentObservationsFromRegionTask = useTask(function*(_, region=US_REGION_CODE) {
         try {
             const response = yield axios.get(`http://localhost:5000/observations/${region}`);
             state.speciesOptions = response.data.sort((a, b) => a.comName.localeCompare(b.comName));
@@ -30,7 +34,7 @@
         }
     });
 
-    const getSpeciesObservationsInRegion = useTask(function*(_, species, region) {
+    const getSpeciesObservationsInRegion = useTask(function*(_, species, region=US_REGION_CODE) {
         try {
             const response = yield axios.get(`http://localhost:5000/species/${species}/region/${region}`);
             state.observations = response.data;
@@ -39,19 +43,21 @@
         }
     });
 
+/*
     function handleStateSelect(value) {
         state.selectedState = value;
         getRecentObservationsFromRegionTask.perform(state.selectedState.code); //selectedState can be null
     }
+*/
 
     function handleSpeciesSelect(value) {
         state.selectedSpecies = value;
         state.observations = [];
-        getSpeciesObservationsInRegion.perform(state.selectedSpecies.speciesCode, state.selectedState.code);
+        getSpeciesObservationsInRegion.perform(state.selectedSpecies.speciesCode);
     }
 
     onMounted(() => {
-        getStatesTask.perform();
+        getRecentObservationsFromRegionTask.perform();
     })
 </script>
 
@@ -61,6 +67,7 @@
             <Mapbox :observations="state.observations" />
         </div>
         <div class="BDR-main__options">
+            <!--
             <FloatLabel>
                 <Dropdown
                     inputId="region-dropdown"
@@ -73,7 +80,7 @@
                 />
                 <label for="region-dropdown">Region</label>
             </FloatLabel>
-
+            -->
             <FloatLabel>
                 <Dropdown
                     id="species-select"
