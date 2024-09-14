@@ -15,6 +15,7 @@
     "dayjs": "^1.11.13",
     "mapbox-gl": "^3.4.0",
     "plotly.js-dist-min": "^2.35.0",
+    "primeicons": "^7.0.0",
     "primevue": "^3.52.0",
     "vue": "^3.4.21",
     "vue-concurrency": "^5.0.1",
