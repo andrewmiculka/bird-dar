@@ -25,12 +25,5 @@ def getSpeciesInRegion(species, region=US_REGION_CODE):
     records = ebird_api.get_species_observations(EBIRD_API_KEY, species, region, 30)
     return records
 
-'''
-@app.get('/states')
-def getStates():
-    states = ebird_api.get_regions(EBIRD_API_KEY, 'subnational1', 'US')
-    return states
-'''  
-
 if __name__ == '__main__':
     app.run()

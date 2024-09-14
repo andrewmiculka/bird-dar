@@ -14,17 +14,6 @@
         observations: [],
     });
 
-/*
-    const getStatesTask = useTask(function*() {
-        try {
-            const response = yield axios.get('http://localhost:5000/states');
-            state.states = response.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-*/
-
     const getRecentObservationsFromRegionTask = useTask(function*(_, region=US_REGION_CODE) {
         try {
             const response = yield axios.get(`http://localhost:5000/observations/${region}`);
@@ -43,13 +32,6 @@
         }
     });
 
-/*
-    function handleStateSelect(value) {
-        state.selectedState = value;
-        getRecentObservationsFromRegionTask.perform(state.selectedState.code); //selectedState can be null
-    }
-*/
-
     function handleSpeciesSelect(value) {
         state.selectedSpecies = value;
         state.observations = [];
@@ -67,20 +49,6 @@
             <Mapbox :observations="state.observations" />
         </div>
         <div class="BDR-main__options">
-            <!--
-            <FloatLabel>
-                <Dropdown
-                    inputId="region-dropdown"
-                    class="w-full"
-                    optionLabel="name"
-                    filter
-                    v-bind:model-value="state.selectedState"
-                    @update:modelValue="handleStateSelect($event)"
-                    :options="state.states"
-                />
-                <label for="region-dropdown">Region</label>
-            </FloatLabel>
-            -->
             <FloatLabel>
                 <Dropdown
                     id="species-select"
