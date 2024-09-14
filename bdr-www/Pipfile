@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 requests = "*"
+flask = "*"
+flask-cors = "*"
+ebird-api = "*"
+python-dotenv = "*"
+jinja2 = "*"
 
 [dev-packages]
 
