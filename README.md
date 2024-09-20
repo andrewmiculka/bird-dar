@@ -1,3 +1,3 @@
 # bird-dar
 
-Trying to use the Cornell Lab of Ornithology eBird API + Mapbox to present a 10 day density heat-map of a selected bird species within a region à la a storm radar.
+Using the Cornell Lab of Ornithology eBird API + Mapbox + plotly.js + Vue to present a 30 day density heat-map of a selected bird species within the US
